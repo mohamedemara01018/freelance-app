@@ -4,7 +4,9 @@ import { appError } from "../../utils/appError.utils.js";
 import bcrypt from 'bcrypt'
 import jwt from 'jsonwebtoken'
 import asyncWrapper from "../../utils/asyncWrapper.utils.js";
-import { statusText } from "../../utils/enums.utils.js";
+import { cloudinaryFolderPath, statusText } from "../../utils/enums.utils.js";
+import { ICloudinaryProbs, replaceImageFromCloudinary, uploadImageToCloudinary } from "../../utils/cloudinary.utils.js";
+import e from "express";
 
 const getAllUser = asyncWrapper(async (req: Request, res: Response) => {
 
@@ -66,7 +68,7 @@ const getUserById = asyncWrapper(async (req: Request, res: Response, next: NextF
 
 
 const updateUser = asyncWrapper(async (req: Request, res: Response, next: NextFunction) => {
-    const { firstName, lastName } = req.body;
+    const { firstName, lastName, country, governorate, city } = req.body;
 
     if (!firstName?.trim()) {
         return next(
@@ -87,10 +89,59 @@ const updateUser = asyncWrapper(async (req: Request, res: Response, next: NextFu
             })
         );
     }
+    if (!country?.trim()) {
+        return next(
+            appError({
+                statusCode: 400,
+                message: "country is required.",
+                statusText: statusText.FAIL,
+            })
+        );
+    }
+
+    if (!governorate?.trim()) {
+        return next(
+            appError({
+                statusCode: 400,
+                message: "governorate is required.",
+                statusText: statusText.FAIL,
+            })
+        );
+    }
+
+    if (!city?.trim()) {
+        return next(
+            appError({
+                statusCode: 400,
+                message: "city is required.",
+                statusText: statusText.FAIL,
+            })
+        );
+    }
+
+
+    const decode = jwt.verify(req.cookies.token, process.env.JWT_TOKEN_SECRET_KEY!) as { email: string }
+    const currentUser = await User.findOne({ email: decode.email });
+
+    let result;
+    if (!currentUser?.public_id) {
+        const fileName = `image-${Date.now()}`
+        result = await uploadImageToCloudinary(req.file?.buffer!, cloudinaryFolderPath.IMAGE, fileName) as ICloudinaryProbs
+    } else {
+        result = await replaceImageFromCloudinary(req.file?.buffer!, currentUser?.public_id!) as ICloudinaryProbs
+    }
 
     const updatedUser = await User.findOneAndUpdate(
         { email: String(req.currentUser?.email) },
-        { firstName, lastName },
+        {
+            firstName,
+            lastName,
+            country,
+            governorate,
+            city,
+            avatar: result.secure_url,
+            public_id: result.public_id
+        },
         {
             new: true,
             runValidators: true,

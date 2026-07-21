@@ -1,6 +1,7 @@
 import express from 'express'
 import { changePassword, getAllUser, getUserById, me, updateUser } from './user.controller.js';
 import { authenticationMiddleware } from '../../middleware/authentication.middleware.js';
+import { upload } from '../../middleware/multer.middleware.js';
 
 
 const router = express.Router();
@@ -15,7 +16,7 @@ router
 
 router
     .route('/update/:id')
-    .put(authenticationMiddleware, updateUser)
+    .put(authenticationMiddleware, upload.single('avatar'), updateUser)
 
 router
     .route('/change-password')

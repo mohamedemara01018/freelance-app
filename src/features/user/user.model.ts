@@ -41,17 +41,17 @@ const userSchema = new Schema(
             default: null,
         },
 
+        public_id: {
+            type: String,
+            default: null,
+        },
+
         phone: {
             type: String,
             default: null,
         },
 
         country: {
-            type: String,
-            default: null,
-        },
-
-        governorate: {
             type: String,
             default: null,
         },

@@ -10,7 +10,16 @@ import rateLimit from "express-rate-limit";
 import { StatusCodes } from 'http-status-codes'
 import { globalErrorHandler } from "./middleware/globalErrorHandler.middleware";
 import authRoutes from './features/auth/auth.routes';
-import userRoutes from './features/user/user.routes'
+import userRoutes from './features/user/user.routes';
+import profileRoutes from './features/profile/profile.route'
+import languageRoutes from './features/language/language.route'
+import certificationRoutes from './features/certification/certification.route'
+import educationRoutes from './features/education/education.route'
+import employmentHistoryRoutes from './features/employment-history/employmentHistory.route'
+import categoryRoutes from './features/category/category.route'
+import skillRoutes from './features/skill/skill.route'
+import profileSkillRoutes from './features/profile-skill/profileSkill.route'
+
 const app: Application = express();
 
 /* ===========================
@@ -73,6 +82,14 @@ app.get("/", (_req: Request, res: Response) => {
 
 app.use("/api/auth", authRoutes);
 app.use("/api/user", userRoutes);
+app.use("/api/profile", profileRoutes);
+app.use("/api/language", languageRoutes);
+app.use("/api/certification", certificationRoutes);
+app.use("/api/education", educationRoutes);
+app.use("/api/employment-histroy", employmentHistoryRoutes);
+app.use("/api/category", categoryRoutes);
+app.use("/api/skill", skillRoutes);
+app.use("/api/profile-skill", profileSkillRoutes);
 
 /* ===========================
    404 Handler

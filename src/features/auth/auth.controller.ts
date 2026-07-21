@@ -11,6 +11,9 @@ import { sendCodeToMail } from "../../utils/sendCodeToMail.js";
 import { UserRole } from '../../utils/enums.utils.js'
 import { sendResetTokenToMail } from "../../utils/sendResetTokenToMail.js";
 import { roleType } from "../user/user.type.js";
+import { Profile } from "../profile/profile.model.js";
+import { defaultProfile } from "../../utils/constants.utils.js";
+import { IProfileInput } from "../../types/schemeTypes.js";
 
 dotenv.config();
 
@@ -106,6 +109,9 @@ const registerNewUser = asyncWrapper(async (req: Request, res: Response, next: N
         emailCodeExpiresAt,
         role: role || 'user'
     });
+
+    const profile = { ...defaultProfile, user: newUser._id }
+    await Profile.create(profile)
 
     res.status(201).json({
         message: "User created successfully",
