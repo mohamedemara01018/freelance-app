@@ -62,3 +62,44 @@ export enum SkillLevel {
     ADVANCED = "advanced",
     EXPERT = "expert",
 }
+
+
+export enum JobType {
+    FIXED = "fixed",
+    HOURLY = "hourly",
+}
+
+
+export enum JobStatus {
+    DRAFT = "draft",
+    OPEN = "open",
+    IN_PROGRESS = "in_progress",
+    COMPLETED = "completed",
+    CANCELLED = "cancelled",
+    CLOSED = "closed",
+}
+
+export enum JobVisibility {
+    PUBLIC = "public",
+    PRIVATE = "private",
+    INVITE_ONLY = "invite_only",
+}
+
+
+export enum AttachmentEntityType {
+    JOB = "job",
+    PROPOSAL = "proposal",
+    MESSAGE = "message",
+    MILESTONE = "milestone",
+    PORTFOLIO = "portfolio",
+    VERIFICATION = "verification",
+}
+
+export enum AttachmentType {
+    IMAGE = "image",
+    VIDEO = "video",
+    AUDIO = "audio",
+    DOCUMENT = "document",
+    ARCHIVE = "archive",
+    OTHER = "other",
+}

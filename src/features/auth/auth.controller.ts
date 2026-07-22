@@ -110,7 +110,7 @@ const registerNewUser = asyncWrapper(async (req: Request, res: Response, next: N
         role: role || 'user'
     });
 
-    const profile = { ...defaultProfile, user: newUser._id }
+    const profile: IProfileInput = { ...defaultProfile, user: newUser._id }
     await Profile.create(profile)
 
     res.status(201).json({

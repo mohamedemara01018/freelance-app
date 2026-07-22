@@ -49,7 +49,7 @@ export interface ISocialLinks {
 }
 
 
-export interface IProfileInput extends Document {
+export interface IProfileInput {
     user: Types.ObjectId;
     title?: string;
     bio?: string;
